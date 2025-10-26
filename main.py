@@ -29,8 +29,9 @@ class LLMApp:
 
         messages.extend(self.conversation_history)
         messages.append({"role": "user", "content": user_message})
-
-        if self.provider == "groq":
+        
+    
+        if self.provider == "groq" and self.model not in ["gpt-5", "gpt-5-mini", "gpt-5-nano"]:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
@@ -39,7 +40,7 @@ class LLMApp:
             )
             assistant_message = response.choices[0].message.content
 
-        else:  # OpenAI
+        else:  # OpenAI or GPT-5 variants
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
